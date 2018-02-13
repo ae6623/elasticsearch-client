@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>es</title>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/elasticsearch.jquery.js"></script>
+</head>
+
+<body>
+    <input type="button" value="search" id="search" />
+    <script type="text/javascript">
+    $(function() {
+        $('#search').click(function() {
+            search(2);
+        });
+    });
+
+    var search = function(schoolId) {
+        var client = new $.es.Client({
+            hosts: 'http://localhost:9200'
+        });
+
+        console.log('es',client);
+
+        var searchParams = {
+            index: 'school',
+            from: 1,
+            size: 10,
+            body: {
+                "query": {
+                    "match_all": {}
+                }
+            }
+        }
+
+        client.search(searchParams, function(err, res) {
+            if (err) {
+                // handle error
+                throw err;
+            }
+
+            response.render('search_results', {
+                results: res.hits.hits,
+                page: 10,
+                pages: Math.ceil(res.hits.total / perPage)
+            });
+        });
+    };
+    </script>
+</body>
+
+</html>
