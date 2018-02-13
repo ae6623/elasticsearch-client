@@ -44,7 +44,7 @@
             response.render('search_results', {
                 results: res.hits.hits,
                 page: 10,
-                pages: Math.ceil(res.hits.total / perPage)
+                pages: Math.ceil(res.hits.total / 1)
             });
         });
     };
